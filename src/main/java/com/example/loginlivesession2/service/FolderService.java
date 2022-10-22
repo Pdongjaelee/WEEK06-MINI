@@ -82,7 +82,7 @@ public class FolderService {
     public String updateTag(Long folderId, TagReqDto tagReqDto, Member member){
         Folder folder = folderObject(folderId);
         authorityCheck(folder, member);
-        folder.updateTag(listToString(tagReqDto.getTagList()));
+        folder.updateTag(listToString(tagReqDto.getTag()));
         return "수정 완료";
     }
 

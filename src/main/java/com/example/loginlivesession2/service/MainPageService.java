@@ -1,6 +1,8 @@
 package com.example.loginlivesession2.service;
 
 import com.example.loginlivesession2.dto.FolderReqDto;
+import com.example.loginlivesession2.dto.FolderSearchResDto;
+import com.example.loginlivesession2.dto.MainPageResDto;
 import com.example.loginlivesession2.entity.Folder;
 import com.example.loginlivesession2.entity.Member;
 import com.example.loginlivesession2.repository.FolderRepository;
@@ -9,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -28,23 +31,22 @@ public class MainPageService {
         return "생성이 완료되었습니다!";
     }
 
-    /*@Transactional
+    @Transactional(readOnly = true)
     public MainPageResDto getMainPage(Member member){
         List<Folder> folderList = folderRepository.findAllByMemberOrderByDate(member);
         List<FolderSearchResDto> folders = folderList.stream()
                 .map(FolderSearchResDto::new)
                 .collect(Collectors.toList());
 
+        return new MainPageResDto(folders,topTagRanking(),myTagRanking(member));
+    }
 
-        return new MainPageResDto(folders,tagRanking(), );
-    }*/
 
 
-    // 전체 tag 순위
-    private List<String> tagRanking(){
-        List<Folder> allTagList = folderRepository.findAll();
+    // 태그 top5
+    private List<Map.Entry<String, Integer>> tagRankingList(List<Folder> folderList){
         HashMap<String, Integer> hm = new HashMap<>();
-        for (Folder tag : allTagList) {
+        for (Folder tag : folderList) {
             String[] tagList = tag.getTags().substring(1).split("#");
             for (String s : tagList) {
                 hm.put(s,hm.getOrDefault(s,0)+1);
@@ -52,14 +54,44 @@ public class MainPageService {
         }
         List<Map.Entry<String, Integer>> entryList = new LinkedList<>(hm.entrySet());
         entryList.sort(((o1, o2) -> hm.get(o2.getKey()) - hm.get(o1.getKey())));
+        return entryList;
+    }
+
+    private HashMap<String,Integer> myTagRanking(Member member){
+        List<Folder> myFolderList = folderRepository.findAllByMember(member);
+        List<Map.Entry<String, Integer>> entryList = tagRankingList(myFolderList);
+        HashMap<String, Integer> topTagsMap = new HashMap<>();
+        if(entryList.size()<5){
+            for(Map.Entry<String, Integer> entry : entryList){
+                topTagsMap.put(entry.getKey(), entry.getValue());
+            }
+        }else{
+            for(Map.Entry<String, Integer> entry : entryList.subList(0,5)){
+                topTagsMap.put(entry.getKey(), entry.getValue());
+            }
+        }
+        return topTagsMap;
+    }
+
+    private List<String> topTagRanking(){
+        List<Folder> allFolderList = folderRepository.findAll();
+        List<Map.Entry<String, Integer>> entryList = tagRankingList(allFolderList);
         List<String> topTags = new ArrayList<>();
-        for(Map.Entry<String, Integer> entry : entryList.subList(0,5)){
-            topTags.add(entry.getKey());
+        if(entryList.size()<5){
+            for(Map.Entry<String, Integer> entry : entryList){
+                topTags.add(entry.getKey());
+            }
+        }else{
+            for(Map.Entry<String, Integer> entry : entryList.subList(0,5)){
+                topTags.add(entry.getKey());
+            }
         }
         return topTags;
     }
 
-    // 내 tag 순위
+
+
+
 
 
 

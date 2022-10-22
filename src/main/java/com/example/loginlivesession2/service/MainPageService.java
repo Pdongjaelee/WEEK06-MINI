@@ -43,10 +43,11 @@ public class MainPageService {
 
 
 
-    // 태그 top5
+    // 태그 많이 된 순서대로 리스트 반환
     private List<Map.Entry<String, Integer>> tagRankingList(List<Folder> folderList){
         HashMap<String, Integer> hm = new HashMap<>();
         for (Folder tag : folderList) {
+            if(tag.getTags().length()==0) continue;
             String[] tagList = tag.getTags().substring(1).split("#");
             for (String s : tagList) {
                 hm.put(s,hm.getOrDefault(s,0)+1);
@@ -56,6 +57,8 @@ public class MainPageService {
         entryList.sort(((o1, o2) -> hm.get(o2.getKey()) - hm.get(o1.getKey())));
         return entryList;
     }
+
+    // 내 태그 top5
 
     private HashMap<String,Integer> myTagRanking(Member member){
         List<Folder> myFolderList = folderRepository.findAllByMember(member);
@@ -73,6 +76,7 @@ public class MainPageService {
         return topTagsMap;
     }
 
+    // 전체 태그 top5
     private List<String> topTagRanking(){
         List<Folder> allFolderList = folderRepository.findAll();
         List<Map.Entry<String, Integer>> entryList = tagRankingList(allFolderList);

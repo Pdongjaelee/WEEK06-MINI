@@ -8,7 +8,8 @@ import java.util.List;
 
 public interface FolderRepository extends JpaRepository<Folder, Long> {
 
-
-
     List<Folder> findAllByMemberOrderByDate(Member member);
+
+    List<Folder> findAllByTagsContains(String tags);
+
 }

@@ -33,6 +33,9 @@ public class FolderController {
         return ResponseDto.success(folderService.updateTag(folderId, tagReqDto, userDetails.getAccount()));
     }
 
-
+    @GetMapping
+    public ResponseDto<?> searchFolderPage(@PathVariable Long folderId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return ResponseDto.success(folderService.searchFolderPage(folderId, userDetails.getAccount()));
+    }
 
 }

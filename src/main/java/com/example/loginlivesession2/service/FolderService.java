@@ -34,7 +34,6 @@ public class FolderService {
     private final FolderRepository folderRepository;
 
     private final PhotoRepository photoRepository;
-    private final MemberRepository memberRepository;
 
     @Value("${cloud.aws.s3.bucket}")
     private String bucketName;
@@ -65,6 +64,10 @@ public class FolderService {
             }
         }
             return "사진이 추가되었습니다!";
+    }
+
+    public Object searchFolderPage(Long folderId, Member member) {
+        a
     }
 
 //    public static void main(String[] args) {
@@ -110,6 +113,7 @@ public class FolderService {
         for (String s : tagList) tag.append(s);
         return tag.toString();
     }
+
 
 
 }

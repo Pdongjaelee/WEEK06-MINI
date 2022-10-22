@@ -20,6 +20,11 @@ public class MainPageController {
         return ResponseDto.success(mainPageService.createFolder(folderReqDto, userDetails.getAccount()));
     }
 
+    @GetMapping("/search")
+    public ResponseDto<?> searchTagFolder(@RequestParam String query,
+                                          @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return ResponseDto.success(mainPageService.searchTagFolder(query, userDetails.getAccount()));
+
     @GetMapping
     public ResponseDto<?> getMainPage(@AuthenticationPrincipal UserDetailsImpl userDetails) {
         return ResponseDto.success(mainPageService.getMainPage(userDetails.getAccount()));

@@ -2,6 +2,8 @@ package com.example.loginlivesession2.service;
 
 import com.example.loginlivesession2.dto.FolderReqDto;
 import com.example.loginlivesession2.dto.FolderSearchResDto;
+import com.example.loginlivesession2.entity.Folder;
+import com.example.loginlivesession2.entity.Member;
 import com.example.loginlivesession2.dto.MainPageResDto;
 import com.example.loginlivesession2.entity.Folder;
 import com.example.loginlivesession2.entity.Member;
@@ -105,6 +107,19 @@ public class MainPageService {
         for (String s : tagList) tag.append(s);
         return tag.toString();
     }
+
+    @Transactional
+    public List<FolderSearchResDto> searchTagFolder(String query, Member member) {
+        List<Folder> folders = folderRepository.findAllByTagsContains(query);
+        List<FolderSearchResDto> folderSearchResDtos = new ArrayList<>();
+
+        for (Folder folder : folders) {
+            Folder tagFolder = folderRepository.findById(folder.getId()).orElseThrow(
+                    () -> new RequestException(ErrorCode.FOLDER_ID_NOT_FOUND_404));
+            FolderSearchResDto folderSearchResDto = new FolderSearchResDto(tagFolder);
+            folderSearchResDtos.add(folderSearchResDto);
+        }
+        return folderSearchResDtos;
 
     // 폴더 삭제
     @Transactional

@@ -10,5 +10,6 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 public class TagReqDto {
+
     private List<String> tag;
 }

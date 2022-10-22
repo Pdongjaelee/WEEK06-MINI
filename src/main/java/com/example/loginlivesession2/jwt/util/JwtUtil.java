@@ -79,6 +79,7 @@ public class JwtUtil {
 
     }
 
+
     // 토큰 검증
     public Boolean tokenValidation(String token) {
         try {
@@ -99,7 +100,7 @@ public class JwtUtil {
         // DB에 저장한 토큰 비교
         Optional<RefreshToken> refreshToken = refreshTokenRepository.findByUserId(getUserId(token));
 
-        return refreshToken.isPresent() && token.equals(refreshToken.get().getRefreshToken());
+        return refreshToken.isPresent() && token.equals(refreshToken.get().getRefreshToken().substring(7));
     }
 
     // 인증 객체 생성

@@ -12,12 +12,15 @@ import com.example.loginlivesession2.jwt.dto.TokenDto;
 import com.example.loginlivesession2.jwt.util.JwtUtil;
 import com.example.loginlivesession2.repository.MemberRepository;
 import com.example.loginlivesession2.repository.RefreshTokenRepository;
+import com.example.loginlivesession2.security.user.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Optional;
 
@@ -68,6 +71,15 @@ public class MemberService {
         return new MemberResDto(member);
 
     }
+    public String issueToken(HttpServletRequest request, HttpServletResponse response){
+        String refreshToken = jwtUtil.getHeaderToken(request, "Refresh");
+        if(!jwtUtil.refreshTokenValidation(refreshToken)){
+            throw new RequestException(ErrorCode.JWT_EXPIRED_TOKEN_401);
+        }
+
+        response.addHeader(JwtUtil.ACCESS_TOKEN, jwtUtil.createToken(jwtUtil.getUserId(refreshToken), "Access"));
+        return "Success IssuedToken";
+    }
 
     private void passwordCheck(LoginReqDto loginReqDto, Member member) {
         if(!passwordEncoder.matches(loginReqDto.getPassword(), member.getPassword())) {
@@ -83,6 +95,6 @@ public class MemberService {
 
     private void setHeader(HttpServletResponse response, TokenDto tokenDto) {
         response.addHeader(JwtUtil.ACCESS_TOKEN, tokenDto.getAuthorization());
-        response.addHeader(JwtUtil.REFRESH_TOKEN, tokenDto.getAuthorization());
+        response.addHeader(JwtUtil.REFRESH_TOKEN, tokenDto.getRefresh_Token());
     }
 }

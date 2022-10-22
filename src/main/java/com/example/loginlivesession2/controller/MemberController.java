@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
@@ -18,7 +19,6 @@ import javax.validation.Valid;
 @RequiredArgsConstructor
 public class MemberController {
 
-    private final JwtUtil jwtUtil;
     private final MemberService memberService;
 
     @PostMapping("/member/signup")
@@ -31,10 +31,9 @@ public class MemberController {
         return ResponseDto.success(memberService.login(loginReqDto, response));
     }
 
+    // 토큰 재발급
     @GetMapping("/issue/token")
-    public ResponseDto<?> issuedToken(@AuthenticationPrincipal UserDetailsImpl userDetails, HttpServletResponse response){
-        response.addHeader(JwtUtil.ACCESS_TOKEN, jwtUtil.createToken(userDetails.getAccount().getUserId(), "Access"));
-        return ResponseDto.success("Success IssuedToken");
+    public ResponseDto<?> issuedToken(HttpServletRequest request, HttpServletResponse response){
+        return ResponseDto.success(memberService.issueToken(request,response));
     }
-
 }

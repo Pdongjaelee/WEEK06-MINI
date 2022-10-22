@@ -10,6 +10,7 @@ public enum ErrorCode {
 
     // JWT 관련
     JWT_BAD_TOKEN_401(HttpStatus.UNAUTHORIZED, "토큰이 유효하지 않습니다."),
+    JWT_EXPIRED_TOKEN_401(HttpStatus.UNAUTHORIZED, "다시 로그인 해주세요."),
 
     // 회원가입 관련
     USERID_DUPLICATION_409(HttpStatus.CONFLICT, "이미 가입된 회원입니다."),

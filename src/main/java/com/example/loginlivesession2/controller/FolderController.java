@@ -34,8 +34,8 @@ public class FolderController {
     }
 
     @GetMapping
-    public ResponseDto<?> searchFolderPage(@PathVariable Long folderId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        return ResponseDto.success(folderService.searchFolderPage(folderId, userDetails.getAccount()));
+    public ResponseDto<?> showFolderPage(@PathVariable Long folderId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return ResponseDto.success(folderService.showFolderPage(folderId, userDetails.getAccount()));
     }
 
 }

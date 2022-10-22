@@ -6,7 +6,7 @@ import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.amazonaws.util.IOUtils;
 import com.example.loginlivesession2.S3.CommonUtils;
-import com.example.loginlivesession2.dto.TagReqDto;
+import com.example.loginlivesession2.dto.*;
 import com.example.loginlivesession2.entity.Folder;
 import com.example.loginlivesession2.entity.Member;
 import com.example.loginlivesession2.entity.Photo;
@@ -23,6 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -66,8 +67,30 @@ public class FolderService {
             return "사진이 추가되었습니다!";
     }
 
-    public Object searchFolderPage(Long folderId, Member member) {
-        a
+    @Transactional(readOnly = true)
+    public FolderPageResDto showFolderPage(Long folderId, Member member) {
+        Folder folder = folderRepository.findById(folderId).orElseThrow(
+                ()-> new RequestException(ErrorCode.FOLDER_ID_NOT_FOUND_404));
+        authorityCheck(folder, member);
+
+        List<FolderResDto> folderResDtoList = new ArrayList<>();
+
+        List<Photo> photos = photoRepository.findAllByFolderId(folderId);
+        for (Photo photo : photos) {
+            FolderResDto folderResDto = new FolderResDto(photo);
+            folderResDtoList.add(folderResDto);
+            }
+
+        List<TagResDto> tagResDtoList = new ArrayList<>();
+
+        if (folder.getTags().length() != 0) {
+            String[] tagList = folder.getTags().substring(1).split("#");
+            for (String s : tagList) {
+                TagResDto tagResDto = new TagResDto("#" + s);
+                tagResDtoList.add(tagResDto);
+            }
+        }
+        return new FolderPageResDto(folderResDtoList,tagResDtoList);
     }
 
 //    public static void main(String[] args) {

@@ -73,6 +73,7 @@ public class MainPageService {
         return tag.toString();
     }
 
+    @Transactional
     public List<FolderSearchResDto> searchTagFolder(String query, Member member) {
         List<Folder> folders = folderRepository.findAllByTagsContains(query);
         List<FolderSearchResDto> folderSearchResDtos = new ArrayList<>();

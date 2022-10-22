@@ -24,6 +24,8 @@ public enum ErrorCode {
     FOLDER_ID_NOT_FOUND_404(HttpStatus.NOT_FOUND, "폴더 id를 찾을 수 없습니다."),
     PHOTO_ID_NOT_FOUND_404(HttpStatus.NOT_FOUND, "포토 id를 찾을 수 없습니다."),
 
+
+    UNAUTHORIZED_401(HttpStatus.UNAUTHORIZED, "권한이 없습니다."),
     /*
      * 해당 주석 위로 enum 코드 추가 바랍니다.
      * 코드 추가시 간편하게 진행하기 위해 생성한 미사용 코드입니다. 사용하지마세요.

@@ -26,14 +26,23 @@ public class Folder {
     @Column(nullable = false)
     private String date;
 
+    @Column
+    private String tags;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id", nullable = false)
     private Member member;
 
-    public Folder(String folderName, String date, Member member) {
+    public Folder(String folderName, String date, String tag, Member member) {
         this.folderName = folderName;
         this.date = date;
+        this.tags = tag;
         this.member = member;
+    }
+
+    // tag 업데이트
+    public void updateTag(String tag){
+        this.tags = tag;
     }
 
 }

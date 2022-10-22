@@ -1,9 +1,7 @@
 package com.example.loginlivesession2.controller;
 
 import com.example.loginlivesession2.dto.TagReqDto;
-import com.example.loginlivesession2.entity.Member;
 import com.example.loginlivesession2.global.ResponseDto;
-import com.example.loginlivesession2.repository.TagRepository;
 import com.example.loginlivesession2.security.user.UserDetailsImpl;
 import com.example.loginlivesession2.service.FolderService;
 import lombok.RequiredArgsConstructor;
@@ -28,7 +26,7 @@ public class FolderController {
         return ResponseDto.success(folderService.addPhotos(multipartFile, folderId, userDetails.getAccount()));
     }
 
-    @PutMapping
+    @PatchMapping
     public ResponseDto<?> updateTag(@RequestBody TagReqDto tagReqDto,
                                     @PathVariable Long folderId,
                                     @AuthenticationPrincipal UserDetailsImpl userDetails){

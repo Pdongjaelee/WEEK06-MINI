@@ -6,17 +6,15 @@ import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.amazonaws.util.IOUtils;
 import com.example.loginlivesession2.S3.CommonUtils;
-import com.example.loginlivesession2.dto.FolderResDto;
 import com.example.loginlivesession2.dto.TagReqDto;
 import com.example.loginlivesession2.entity.Folder;
 import com.example.loginlivesession2.entity.Member;
 import com.example.loginlivesession2.entity.Photo;
-import com.example.loginlivesession2.entity.Tag;
 import com.example.loginlivesession2.exception.ErrorCode;
 import com.example.loginlivesession2.exception.RequestException;
 import com.example.loginlivesession2.repository.FolderRepository;
+import com.example.loginlivesession2.repository.MemberRepository;
 import com.example.loginlivesession2.repository.PhotoRepository;
-import com.example.loginlivesession2.repository.TagRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -25,8 +23,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 @Service
@@ -38,7 +34,7 @@ public class FolderService {
     private final FolderRepository folderRepository;
 
     private final PhotoRepository photoRepository;
-    private final TagRepository tagRepository;
+    private final MemberRepository memberRepository;
 
     @Value("${cloud.aws.s3.bucket}")
     private String bucketName;
@@ -84,10 +80,9 @@ public class FolderService {
 //}
     @Transactional
     public String updateTag(Long folderId, TagReqDto tagReqDto, Member member){
-        // 폴더 아이디 존재 여부
-        folderIdCheck(folderId);
-        Tag tag = tagRepository.findByFolderId(folderId);
-        tag.updateTag(listToString(tagReqDto.getTagList()));
+        Folder folder = folderObject(folderId);
+        authorityCheck(folder, member);
+        folder.updateTag(listToString(tagReqDto.getTagList()));
         return "수정 완료";
     }
 
@@ -96,6 +91,13 @@ public class FolderService {
                 () -> new RequestException(ErrorCode.FOLDER_ID_NOT_FOUND_404)
         );
     }
+
+    private void authorityCheck(Folder folder, Member member) {
+        if(!folder.getMember().getUserId().equals(member.getUserId())){
+            throw new RequestException(ErrorCode.UNAUTHORIZED_401);
+        }
+    }
+
 
     private Folder folderObject(Long id) {
         return folderRepository.findById(id).orElseThrow(

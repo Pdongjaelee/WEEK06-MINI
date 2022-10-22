@@ -16,6 +16,6 @@ public class MainPageResDto {
 
     private List<FolderSearchResDto> folders;
     private List<String> tags;
-    private List<HashMap<String, Integer>> mytags;
+    private HashMap<String, Integer> mytags;
 
 }

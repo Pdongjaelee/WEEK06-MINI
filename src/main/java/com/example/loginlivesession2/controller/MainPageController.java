@@ -25,7 +25,8 @@ public class MainPageController {
         return ResponseDto.success(mainPageService.getMainPage(userDetails.getAccount()));
     }
 
-
-
-
+    @DeleteMapping("/{id}")
+    public ResponseDto<?> deleteFolder(@PathVariable Long id, @AuthenticationPrincipal UserDetailsImpl userDetails){
+        return ResponseDto.success(mainPageService.deleteFolder(id, userDetails.getAccount()));
+    }
 }

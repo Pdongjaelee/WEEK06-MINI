@@ -24,6 +24,7 @@ public class MainPageController {
     public ResponseDto<?> searchTagFolder(@RequestParam String query,
                                           @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return ResponseDto.success(mainPageService.searchTagFolder(query, userDetails.getAccount()));
+    }
 
     @GetMapping
     public ResponseDto<?> getMainPage(@AuthenticationPrincipal UserDetailsImpl userDetails) {

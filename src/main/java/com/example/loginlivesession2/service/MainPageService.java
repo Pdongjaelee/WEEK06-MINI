@@ -2,8 +2,6 @@ package com.example.loginlivesession2.service;
 
 import com.example.loginlivesession2.dto.FolderReqDto;
 import com.example.loginlivesession2.dto.FolderSearchResDto;
-import com.example.loginlivesession2.entity.Folder;
-import com.example.loginlivesession2.entity.Member;
 import com.example.loginlivesession2.dto.MainPageResDto;
 import com.example.loginlivesession2.entity.Folder;
 import com.example.loginlivesession2.entity.Member;
@@ -120,6 +118,7 @@ public class MainPageService {
             folderSearchResDtos.add(folderSearchResDto);
         }
         return folderSearchResDtos;
+    }
 
     // 폴더 삭제
     @Transactional

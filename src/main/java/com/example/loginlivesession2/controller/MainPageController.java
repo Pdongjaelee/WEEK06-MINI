@@ -7,10 +7,7 @@ import com.example.loginlivesession2.service.FolderService;
 import com.example.loginlivesession2.service.MainPageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -23,6 +20,7 @@ public class MainPageController {
     public ResponseDto<?> createFolder(@RequestBody FolderReqDto folderReqDto , @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return ResponseDto.success(mainPageService.createFolder(folderReqDto, userDetails.getAccount()));
     }
+
 
 
 

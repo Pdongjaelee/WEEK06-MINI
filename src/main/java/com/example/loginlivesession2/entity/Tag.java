@@ -27,5 +27,14 @@ public class Tag {
     @Column(nullable = false)
     private String tags;
 
+    public Tag(String tag, Folder folder) {
+        this.tags = tag;
+        this.folder = folder;
+    }
+
+    // tag 업데이트
+    public void updateTag(String tag){
+        this.tags = tag;
+    }
 
 }

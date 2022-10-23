@@ -38,4 +38,11 @@ public class FolderController {
         return ResponseDto.success(folderService.showFolderPage(folderId, userDetails.getAccount()));
     }
 
+
+    //
+    @DeleteMapping("/{id}")
+    public ResponseDto<?> deletePhotos(@PathVariable Long id, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return ResponseDto.success(folderService.deletePhotos(id, userDetails.getAccount()));
+
+    }
 }

@@ -13,7 +13,6 @@ import com.example.loginlivesession2.entity.Photo;
 import com.example.loginlivesession2.exception.ErrorCode;
 import com.example.loginlivesession2.exception.RequestException;
 import com.example.loginlivesession2.repository.FolderRepository;
-import com.example.loginlivesession2.repository.MemberRepository;
 import com.example.loginlivesession2.repository.PhotoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -117,14 +116,6 @@ public class FolderService {
                 () -> new RequestException(ErrorCode.FOLDER_ID_NOT_FOUND_404)
         );
     }
-
-    private void authorityCheck(Folder folder, Member member) {
-        if(!folder.getMember().getUserId().equals(member.getUserId())){
-            throw new RequestException(ErrorCode.UNAUTHORIZED_401);
-        }
-    }
-
-
     private Folder folderObject(Long id) {
         return folderRepository.findById(id).orElseThrow(
                 () -> new RequestException(ErrorCode.FOLDER_ID_NOT_FOUND_404)
@@ -137,9 +128,22 @@ public class FolderService {
         return tag.toString();
     }
 
-
-
+    @Transactional
+    public String deletePhotos(Long id, Member member) {
+        Folder folder = folderRepository.findById(id)
+                .orElseThrow(() -> new RequestException(ErrorCode.FOLDER_ID_NOT_FOUND_404));
+        Photo photo = photoRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("해당 파일이 존재 하지 않습니다."));
+        authorityCheck(folder, member);
+        List<Photo> photoList = photoRepository.findAllByFolderId(id);
+        for(Photo photos : photoList) {
+            photoRepository.deleteById(photos.getId());
+        }
+        return "사진 삭제";
+    }
+    private void authorityCheck(Folder folder, Member member) {
+        if(!folder.getMember().getUserId().equals(member.getUserId())){
+            throw new RequestException(ErrorCode.UNAUTHORIZED_401);
+        }
+    }
 }
-
-
-

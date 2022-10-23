@@ -1,2 +1,2 @@
-# gloryoneteam
-🧸백엔드
+# 🧸gloryoneteam
+백엔드

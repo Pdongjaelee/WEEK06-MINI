@@ -77,31 +77,21 @@ public class MainPageService {
         List<Folder> myFolderList = folderRepository.findAllByMember(member);
         List<Map.Entry<String, Integer>> entryList = tagRankingList(myFolderList);
         HashMap<String, Integer> topTagsMap = new HashMap<>();
-        if (entryList.size() < 5) {
-            for (Map.Entry<String, Integer> entry : entryList) {
+        if(entryList.size() > 5)  entryList.subList(0,5);
+        for (Map.Entry<String, Integer> entry : entryList) {
                 topTagsMap.put(entry.getKey(), entry.getValue());
-            }
-        } else {
-            for (Map.Entry<String, Integer> entry : entryList.subList(0, 5)) {
-                topTagsMap.put(entry.getKey(), entry.getValue());
-            }
         }
         return topTagsMap;
     }
 
     // 전체 태그 top5
     private List<String> topTagRanking() {
-        List<Folder> allFolderList = folderRepository.findAll();
+        List<Folder> allFolderList = folderRepository.findByDateAfter(LocalDate.now().minusDays(7));
         List<Map.Entry<String, Integer>> entryList = tagRankingList(allFolderList);
         List<String> topTags = new ArrayList<>();
-        if (entryList.size() < 5) {
-            for (Map.Entry<String, Integer> entry : entryList) {
-                topTags.add(entry.getKey());
-            }
-        } else {
-            for (Map.Entry<String, Integer> entry : entryList.subList(0, 5)) {
-                topTags.add(entry.getKey());
-            }
+        if(entryList.size() > 5)  entryList.subList(0,5);
+        for (Map.Entry<String, Integer> entry : entryList) {
+            topTags.add(entry.getKey());
         }
         return topTags;
     }

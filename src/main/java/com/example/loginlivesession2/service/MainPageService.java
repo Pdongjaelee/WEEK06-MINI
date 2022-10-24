@@ -106,7 +106,7 @@ public class MainPageService {
         return topTags;
     }
 
-    // 메인페이지 보여주기, 폴더, 폴더명, 전체 이용자 태그 top5, 내 태그 top5
+    // 태그 검색
     @Transactional
     public List<FolderSearchResDto> searchTagFolder(String query, Member member) {
 

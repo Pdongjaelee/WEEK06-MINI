@@ -25,8 +25,12 @@ public class Photo {
     @Column(nullable = false)
     private String url;
 
-    public Photo(Folder folder, String url) {
+    @Column(nullable = false)
+    private String fileName;
+
+    public Photo(Folder folder, String url, String fileName) {
         this.folder = folder;
         this.url = url;
+        this.fileName = fileName;
     }
 }

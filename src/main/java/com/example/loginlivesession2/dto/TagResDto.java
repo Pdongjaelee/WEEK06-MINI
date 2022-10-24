@@ -2,12 +2,14 @@ package com.example.loginlivesession2.dto;
 
 import lombok.Getter;
 
+import java.util.List;
+
 @Getter
 public class TagResDto {
 
-    private String tags;
+    private List<String> tags;
 
-    public TagResDto(String tags) {
+    public TagResDto(List<String> tags) {
         this.tags = tags;
     }
 }

@@ -13,7 +13,6 @@ import com.example.loginlivesession2.entity.Photo;
 import com.example.loginlivesession2.exception.ErrorCode;
 import com.example.loginlivesession2.exception.RequestException;
 import com.example.loginlivesession2.repository.FolderRepository;
-import com.example.loginlivesession2.repository.MemberRepository;
 import com.example.loginlivesession2.repository.PhotoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -42,6 +41,7 @@ public class FolderService {
     @Transactional
     public String addPhotos(List<MultipartFile> multipartFile, Long folderId, Member member) throws IOException {
         Folder folder = folderObject(folderId);
+        authorityCheck(folder, member);
 
         String imgurl = "";
 
@@ -59,18 +59,17 @@ public class FolderService {
                         .withCannedAcl(CannedAccessControlList.PublicRead));
                 imgurl = amazonS3Client.getUrl(bucketName, fileName).toString();
 
-                Photo photo = new Photo(folder, imgurl);
+                Photo photo = new Photo(folder, imgurl,fileName);
 
                 photoRepository.save(photo);
             }
         }
-            return "사진이 추가되었습니다!";
+        return "사진이 추가되었습니다!";
     }
 
     @Transactional(readOnly = true)
     public FolderPageResDto showFolderPage(Long folderId, Member member) {
-        Folder folder = folderRepository.findById(folderId).orElseThrow(
-                ()-> new RequestException(ErrorCode.FOLDER_ID_NOT_FOUND_404));
+        Folder folder = folderObject(folderId);
         authorityCheck(folder, member);
 
         List<FolderResDto> folderResDtoList = new ArrayList<>();
@@ -79,21 +78,20 @@ public class FolderService {
         for (Photo photo : photos) {
             FolderResDto folderResDto = new FolderResDto(photo);
             folderResDtoList.add(folderResDto);
-            }
+        }
 
-        List<TagResDto> tagResDtoList = new ArrayList<>();
+        List<String> tags = new ArrayList<>();
 
         if (folder.getTags().length() != 0) {
-            String[] tagList = folder.getTags().substring(1).split("#");
-            for (String s : tagList) {
-                TagResDto tagResDto = new TagResDto("#" + s);
-                tagResDtoList.add(tagResDto);
+            String[] tagArray = folder.getTags().substring(1).split("#");
+            for (String s : tagArray) {
+                tags.add("#" + s);
             }
         }
-        return new FolderPageResDto(folderResDtoList,tagResDtoList);
+        return new FolderPageResDto(folderResDtoList,tags);
     }
 
-//    public static void main(String[] args) {
+    //    public static void main(String[] args) {
 //        String filepath = "/the/file/path/image.jpg";
 //        File f = new File(filepath);
 //        String mimetype= new MimetypesFileTypeMap().getContentType(f);
@@ -112,34 +110,35 @@ public class FolderService {
         return "수정 완료";
     }
 
-     private void folderIdCheck(Long id) {
-        folderRepository.findById(id).orElseThrow(
-                () -> new RequestException(ErrorCode.FOLDER_ID_NOT_FOUND_404)
-        );
-    }
 
+
+    @Transactional
+    public String deletePhotos(Long folderId, List<Long>photoIdList, Member member) {
+        Folder folder = folderObject(folderId);
+        authorityCheck(folder, member);
+        System.out.println(photoIdList);
+        for(Long photoId : photoIdList) {
+            Photo photo = photoRepository.findById(photoId).orElseThrow(
+                    () -> new RequestException(ErrorCode.PHOTO_ID_NOT_FOUND_404));
+            amazonS3Client.deleteObject(bucketName,photo.getFileName());
+            photoRepository.deleteById(photoId);
+        }
+        return "삭제가 완료되었습니다!";
+    }
     private void authorityCheck(Folder folder, Member member) {
         if(!folder.getMember().getUserId().equals(member.getUserId())){
             throw new RequestException(ErrorCode.UNAUTHORIZED_401);
         }
     }
 
-
     private Folder folderObject(Long id) {
         return folderRepository.findById(id).orElseThrow(
                 () -> new RequestException(ErrorCode.FOLDER_ID_NOT_FOUND_404)
         );
-
     }
     private String listToString(List<String> tagList) {
         StringBuilder tag = new StringBuilder();
         for (String s : tagList) tag.append(s);
         return tag.toString();
     }
-
-
-
 }
-
-
-

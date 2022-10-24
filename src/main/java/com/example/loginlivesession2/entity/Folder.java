@@ -24,7 +24,7 @@ public class Folder {
     private String folderName;
 
     @Column(nullable = false)
-    private String date;
+    private LocalDate date;
 
     @Column
     private String tags;
@@ -33,7 +33,7 @@ public class Folder {
     @JoinColumn(name = "member_id", nullable = false)
     private Member member;
 
-    public Folder(String folderName, String date, String tag, Member member) {
+    public Folder(String folderName, LocalDate date, String tag, Member member) {
         this.folderName = folderName;
         this.date = date;
         this.tags = tag;

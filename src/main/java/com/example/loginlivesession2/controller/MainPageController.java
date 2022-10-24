@@ -15,22 +15,26 @@ public class MainPageController {
 
     private final MainPageService mainPageService;
 
+    // 폴더 생성
     @PostMapping
     public ResponseDto<?> createFolder(@RequestBody FolderReqDto folderReqDto , @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return ResponseDto.success(mainPageService.createFolder(folderReqDto, userDetails.getAccount()));
     }
 
+    // 메인 페이지에서 태그 검색
     @GetMapping("/search")
     public ResponseDto<?> searchTagFolder(@RequestParam String query,
                                           @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return ResponseDto.success(mainPageService.searchTagFolder(query, userDetails.getAccount()));
     }
 
+    // 메인페이지 보여주기, 폴더, 폴더명, 전체 이용자 태그 top5, 내 태그 top5
     @GetMapping
     public ResponseDto<?> getMainPage(@AuthenticationPrincipal UserDetailsImpl userDetails) {
         return ResponseDto.success(mainPageService.getMainPage(userDetails.getAccount()));
     }
 
+    // 폴더 삭제
     @DeleteMapping("/{id}")
     public ResponseDto<?> deleteFolder(@PathVariable Long id, @AuthenticationPrincipal UserDetailsImpl userDetails){
         return ResponseDto.success(mainPageService.deleteFolder(id, userDetails.getAccount()));

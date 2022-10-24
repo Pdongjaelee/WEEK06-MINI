@@ -15,9 +15,9 @@ import java.util.List;
 public class FolderPageResDto {
 
     private List<FolderResDto> photos;
-    private List<TagResDto> tags;
+    private List<String> tags;
 
-    public FolderPageResDto(List<FolderResDto> photos, List<TagResDto> tags) {
+    public FolderPageResDto(List<FolderResDto> photos, List<String> tags) {
         this.photos = photos;
         this.tags = tags;
     }

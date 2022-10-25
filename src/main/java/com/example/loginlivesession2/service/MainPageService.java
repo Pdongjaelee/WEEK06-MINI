@@ -36,8 +36,13 @@ public class MainPageService {
 
     @Transactional
     public String createFolder(FolderReqDto folderReqDto, Member member) {
+        try{
+            LocalDate.parse(folderReqDto.getDate(), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        }catch (Exception e){
+            throw new RequestException(ErrorCode.DateTimeException_400);
+        }
         LocalDate date = LocalDate.parse(folderReqDto.getDate(), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-        Folder folder = new Folder(folderReqDto.getFolderName(),
+                Folder folder = new Folder(folderReqDto.getFolderName(),
                 date,
                 listToString(folderReqDto.getTag()),
                 member);

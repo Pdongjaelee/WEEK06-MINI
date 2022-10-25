@@ -15,6 +15,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -33,23 +35,30 @@ public class TagModifyService {
     public String updateTag(Long folderId, TagReqDto tagReqDto, Member member){
         Folder folder = folderObject(folderId);
         authorityCheck(folder, member);
-        folder.updateFolderTag(listToString(tagReqDto.getTag()));
+
+        // 들어온 태그 중 중복 제거
+        HashSet<String> hashSet = new HashSet<>(tagReqDto.getTag());
+        List<String> newTagList = new ArrayList<>(hashSet);
+        folder.updateFolderTag(listToString(newTagList));
 
         for (String tagName : tagReqDto.getTag()) {
 
             // 1. folderTag 엔티티에서 findbyFolderId.getTagName()
             List<FolderTag> folderTagList = foldertagRepository.findByFolderId(folderId);
             List<String> TagList = folderTagList.stream()
-                    .map(s-> s.getTag().getTagName()).collect(Collectors.toList());
+                    .map(FolderTag::getTagName).collect(Collectors.toList());
+
 
             // 2. 들어온 tagName이 폴더에 있는 태그 중에 일치하는 게 없으면 folderTag 엔티티 추가 (save)
-            for (String s : tagReqDto.getTag()) {
+            for (String s : newTagList) {
                 if(!TagList.contains(s)){
-                    Tag tag = new Tag(s);
-                    foldertagRepository.save(new FolderTag(folder, tag));
+                    foldertagRepository.save(new FolderTag(folder, s));
 
                     // Tag 엔티티에 존재하지 않으면 새 태그 save, 있으면 plusTag
-                    if(tagRepository.findByTagNameEquals(tagName).isEmpty()){
+                    Tag tag = tagRepository.findByTagName(s).orElse(new Tag(s));
+
+                    // 2. 존재하지 않으면 새 태그 save, 있으면 plusTag
+                    if(tagRepository.findByTagName(s).isEmpty()){
                         tagRepository.save(tag);
                     }else{
                         tag.plusTag();
@@ -59,9 +68,9 @@ public class TagModifyService {
 
             // 3. tagName이 폴더에 있는 태그 중, 들어온 tagName 중에 없는 것 삭제
             for (String s : TagList) {
-                if(!tagReqDto.getTag().contains(s)){
-                    Tag tag = new Tag(s);
-                    foldertagRepository.delete(new FolderTag(folder, tag));
+                if(!newTagList.contains(s)){
+                    Tag tag = tagRepository.findByTagName(s).orElse(new Tag(s));
+                    foldertagRepository.delete(foldertagRepository.findByFolderAndTagName(folder, s));
                     // Tag 엔티티에서 -1
                     tag.minusTag();
                 }

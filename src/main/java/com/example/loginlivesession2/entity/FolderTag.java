@@ -20,12 +20,11 @@ public class FolderTag extends TimeStamped {
     @JoinColumn(name = "folder_id")
     private Folder folder;
 
-    @ManyToOne
-    @JoinColumn(name = "tag_id")
-    private Tag tag;
+    @Column
+    private String tagName;
 
-    public FolderTag(Folder folder, Tag tag) {
+    public FolderTag(Folder folder, String tagName) {
         this.folder = folder;
-        this.tag = tag;
+        this.tagName = tagName;
     }
 }

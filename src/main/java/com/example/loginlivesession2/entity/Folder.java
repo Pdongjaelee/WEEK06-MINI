@@ -40,9 +40,6 @@ public class Folder extends TimeStamped{
         this.member = member;
     }
 
-    // tag 업데이트
-    public void updateTag(String tag){
-        this.tags = tag;
-    }
-
+//     tag 업데이트
+    public void updateTag(String tag){this.tags = tag;}
 }

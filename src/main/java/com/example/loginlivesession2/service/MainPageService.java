@@ -4,13 +4,13 @@ import com.amazonaws.services.s3.AmazonS3Client;
 import com.example.loginlivesession2.dto.FolderReqDto;
 import com.example.loginlivesession2.dto.FolderSearchResDto;
 import com.example.loginlivesession2.dto.MainPageResDto;
-import com.example.loginlivesession2.entity.Folder;
-import com.example.loginlivesession2.entity.Member;
-import com.example.loginlivesession2.entity.Photo;
+import com.example.loginlivesession2.entity.*;
 import com.example.loginlivesession2.exception.ErrorCode;
 import com.example.loginlivesession2.exception.RequestException;
 import com.example.loginlivesession2.repository.FolderRepository;
+import com.example.loginlivesession2.repository.FoldertagRepository;
 import com.example.loginlivesession2.repository.PhotoRepository;
+import com.example.loginlivesession2.repository.TagRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -29,7 +29,11 @@ public class MainPageService {
 
     private final PhotoRepository photoRepository;
 
+    private final TagRepository tagRepository;
+
     private final AmazonS3Client amazonS3Client;
+
+    private final FoldertagRepository foldertagRepository;
 
     @Value("${cloud.aws.s3.bucket}")
     private String bucketName;
@@ -47,6 +51,13 @@ public class MainPageService {
                 listToString(folderReqDto.getTag()),
                 member);
         folderRepository.save(folder);
+
+        for (String folderTag : folderReqDto.getTag()) {
+            Tag tag = new Tag(folderTag);
+            tagRepository.save(tag);
+            Foldertag foldertag = new Foldertag(folder, tag);
+            foldertagRepository.save(foldertag);
+        }
         return "생성이 완료되었습니다!";
     }
 

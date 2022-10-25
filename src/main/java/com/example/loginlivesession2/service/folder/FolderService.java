@@ -6,7 +6,6 @@ import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.amazonaws.util.IOUtils;
 import com.example.loginlivesession2.S3.CommonUtils;
-import com.example.loginlivesession2.dto.requestdto.TagReqDto;
 import com.example.loginlivesession2.dto.responsedto.FolderPageResDto;
 import com.example.loginlivesession2.dto.responsedto.FolderResDto;
 import com.example.loginlivesession2.entity.Folder;
@@ -82,6 +81,7 @@ public class FolderService {
             folderResDtoList.add(folderResDto);
         }
 
+        // 수정 필요
         List<String> tags = new ArrayList<>();
 
         if (folder.getTags().length() != 0) {
@@ -91,14 +91,6 @@ public class FolderService {
             }
         }
         return new FolderPageResDto(folderResDtoList,tags);
-    }
-
-    @Transactional
-    public String updateTag(Long folderId, TagReqDto tagReqDto, Member member){
-        Folder folder = folderObject(folderId);
-        authorityCheck(folder, member);
-        folder.updateFolderTag(listToString(tagReqDto.getTag()));
-        return "수정 완료";
     }
 
 
@@ -128,9 +120,4 @@ public class FolderService {
         );
     }
 
-    private String listToString(List<String> tagList) {
-        StringBuilder tag = new StringBuilder();
-        for (String s : tagList) tag.append(s);
-        return tag.toString();
-    }
 }

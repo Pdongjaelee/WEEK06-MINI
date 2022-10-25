@@ -6,16 +6,16 @@ import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.amazonaws.util.IOUtils;
 import com.example.loginlivesession2.S3.CommonUtils;
-import com.example.loginlivesession2.dto.requestdto.TagReqDto;
 import com.example.loginlivesession2.dto.responsedto.FolderPageResDto;
 import com.example.loginlivesession2.dto.responsedto.FolderResDto;
-import com.example.loginlivesession2.entity.Folder;
-import com.example.loginlivesession2.entity.Member;
-import com.example.loginlivesession2.entity.Photo;
+import com.example.loginlivesession2.dto.responsedto.TagResDto;
+import com.example.loginlivesession2.entity.*;
 import com.example.loginlivesession2.exception.ErrorCode;
 import com.example.loginlivesession2.exception.RequestException;
 import com.example.loginlivesession2.repository.FolderRepository;
+import com.example.loginlivesession2.repository.FoldertagRepository;
 import com.example.loginlivesession2.repository.PhotoRepository;
+import com.example.loginlivesession2.repository.TagRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -36,6 +36,8 @@ public class FolderService {
     private final FolderRepository folderRepository;
 
     private final PhotoRepository photoRepository;
+
+    private final FoldertagRepository foldertagRepository;
 
     @Value("${cloud.aws.s3.bucket}")
     private String bucketName;
@@ -84,21 +86,11 @@ public class FolderService {
 
         List<String> tags = new ArrayList<>();
 
-        if (folder.getTags().length() != 0) {
-            String[] tagArray = folder.getTags().substring(1).split("#");
-            for (String s : tagArray) {
-                tags.add("#" + s);
-            }
-        }
-        return new FolderPageResDto(folderResDtoList,tags);
+        List<FolderTag> folderTag = foldertagRepository.findByFolderId(folderId);
+        for (FolderTag tag : folderTag) {
+            tags.add(tag.getTagName());
     }
-
-    @Transactional
-    public String updateTag(Long folderId, TagReqDto tagReqDto, Member member){
-        Folder folder = folderObject(folderId);
-        authorityCheck(folder, member);
-        folder.updateFolderTag(listToString(tagReqDto.getTag()));
-        return "수정 완료";
+        return new FolderPageResDto(folderResDtoList,tags);
     }
 
 
@@ -128,9 +120,4 @@ public class FolderService {
         );
     }
 
-    private String listToString(List<String> tagList) {
-        StringBuilder tag = new StringBuilder();
-        for (String s : tagList) tag.append(s);
-        return tag.toString();
-    }
 }

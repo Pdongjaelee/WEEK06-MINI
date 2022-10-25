@@ -5,7 +5,7 @@ import com.example.loginlivesession2.dto.responsedto.FolderSearchResDto;
 import com.example.loginlivesession2.dto.responsedto.MainPageResDto;
 import com.example.loginlivesession2.global.ResponseDto;
 import com.example.loginlivesession2.security.user.UserDetailsImpl;
-import com.example.loginlivesession2.service.mainpage.MainPageService;
+import com.example.loginlivesession2.service.member.mainpage.MainPageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

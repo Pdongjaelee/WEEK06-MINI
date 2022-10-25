@@ -1,4 +1,4 @@
-package com.example.loginlivesession2.dto;
+package com.example.loginlivesession2.dto.responsedto;
 
 import com.example.loginlivesession2.entity.Photo;
 

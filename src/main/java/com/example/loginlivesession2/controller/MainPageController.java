@@ -1,11 +1,11 @@
 package com.example.loginlivesession2.controller;
 
-import com.example.loginlivesession2.dto.FolderReqDto;
-import com.example.loginlivesession2.dto.FolderSearchResDto;
-import com.example.loginlivesession2.dto.MainPageResDto;
+import com.example.loginlivesession2.dto.requestdto.FolderReqDto;
+import com.example.loginlivesession2.dto.responsedto.FolderSearchResDto;
+import com.example.loginlivesession2.dto.responsedto.MainPageResDto;
 import com.example.loginlivesession2.global.ResponseDto;
 import com.example.loginlivesession2.security.user.UserDetailsImpl;
-import com.example.loginlivesession2.service.MainPageService;
+import com.example.loginlivesession2.service.mainpage.MainPageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

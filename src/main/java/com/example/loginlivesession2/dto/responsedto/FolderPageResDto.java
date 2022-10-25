@@ -1,11 +1,9 @@
-package com.example.loginlivesession2.dto;
+package com.example.loginlivesession2.dto.responsedto;
 
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.util.HashMap;
 import java.util.List;
 
 

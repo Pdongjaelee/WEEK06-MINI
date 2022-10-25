@@ -1,4 +1,4 @@
-package com.example.loginlivesession2.service;
+package com.example.loginlivesession2.service.folder;
 
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
@@ -6,7 +6,9 @@ import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.amazonaws.util.IOUtils;
 import com.example.loginlivesession2.S3.CommonUtils;
-import com.example.loginlivesession2.dto.*;
+import com.example.loginlivesession2.dto.requestdto.TagReqDto;
+import com.example.loginlivesession2.dto.responsedto.FolderPageResDto;
+import com.example.loginlivesession2.dto.responsedto.FolderResDto;
 import com.example.loginlivesession2.entity.Folder;
 import com.example.loginlivesession2.entity.Member;
 import com.example.loginlivesession2.entity.Photo;
@@ -125,6 +127,7 @@ public class FolderService {
                 () -> new RequestException(ErrorCode.FOLDER_ID_NOT_FOUND_404)
         );
     }
+
     private String listToString(List<String> tagList) {
         StringBuilder tag = new StringBuilder();
         for (String s : tagList) tag.append(s);

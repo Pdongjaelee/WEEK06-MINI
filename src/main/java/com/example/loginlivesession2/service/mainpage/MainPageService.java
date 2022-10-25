@@ -1,9 +1,9 @@
-package com.example.loginlivesession2.service;
+package com.example.loginlivesession2.service.mainpage;
 
 import com.amazonaws.services.s3.AmazonS3Client;
-import com.example.loginlivesession2.dto.FolderReqDto;
-import com.example.loginlivesession2.dto.FolderSearchResDto;
-import com.example.loginlivesession2.dto.MainPageResDto;
+import com.example.loginlivesession2.dto.requestdto.FolderReqDto;
+import com.example.loginlivesession2.dto.responsedto.FolderSearchResDto;
+import com.example.loginlivesession2.dto.responsedto.MainPageResDto;
 import com.example.loginlivesession2.entity.*;
 import com.example.loginlivesession2.exception.ErrorCode;
 import com.example.loginlivesession2.exception.RequestException;
@@ -55,8 +55,7 @@ public class MainPageService {
         for (String folderTag : folderReqDto.getTag()) {
             Tag tag = new Tag(folderTag);
             tagRepository.save(tag);
-            Foldertag foldertag = new Foldertag(folder, tag);
-            foldertagRepository.save(foldertag);
+            foldertagRepository.save(new Foldertag(folder, tag));
         }
         return "생성이 완료되었습니다!";
     }

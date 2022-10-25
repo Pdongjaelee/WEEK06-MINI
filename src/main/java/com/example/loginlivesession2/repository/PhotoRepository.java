@@ -1,7 +1,5 @@
 package com.example.loginlivesession2.repository;
 
-import com.example.loginlivesession2.dto.PhotoResDto;
-import com.example.loginlivesession2.entity.Folder;
 import com.example.loginlivesession2.entity.Photo;
 import org.springframework.data.jpa.repository.JpaRepository;
 

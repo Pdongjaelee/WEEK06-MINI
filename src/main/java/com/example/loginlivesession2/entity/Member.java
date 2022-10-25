@@ -1,6 +1,6 @@
 package com.example.loginlivesession2.entity;
 
-import com.example.loginlivesession2.dto.MemberReqDto;
+import com.example.loginlivesession2.dto.requestdto.MemberReqDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 

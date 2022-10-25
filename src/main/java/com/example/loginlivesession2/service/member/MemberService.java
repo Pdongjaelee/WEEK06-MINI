@@ -1,21 +1,17 @@
-package com.example.loginlivesession2.service;
+package com.example.loginlivesession2.service.member;
 
-import com.example.loginlivesession2.dto.LoginReqDto;
-import com.example.loginlivesession2.dto.MemberReqDto;
-import com.example.loginlivesession2.dto.MemberResDto;
+import com.example.loginlivesession2.dto.requestdto.LoginReqDto;
+import com.example.loginlivesession2.dto.requestdto.MemberReqDto;
+import com.example.loginlivesession2.dto.responsedto.MemberResDto;
 import com.example.loginlivesession2.entity.Member;
 import com.example.loginlivesession2.entity.RefreshToken;
 import com.example.loginlivesession2.exception.ErrorCode;
 import com.example.loginlivesession2.exception.RequestException;
-import com.example.loginlivesession2.global.ResponseDto;
 import com.example.loginlivesession2.jwt.dto.TokenDto;
 import com.example.loginlivesession2.jwt.util.JwtUtil;
 import com.example.loginlivesession2.repository.MemberRepository;
 import com.example.loginlivesession2.repository.RefreshTokenRepository;
-import com.example.loginlivesession2.security.user.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

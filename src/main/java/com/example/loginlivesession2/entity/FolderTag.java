@@ -10,7 +10,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 @Getter
 @Entity
-public class Foldertag {
+public class FolderTag extends TimeStamped {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,7 +24,7 @@ public class Foldertag {
     @JoinColumn(name = "tag_id")
     private Tag tag;
 
-    public Foldertag(Folder folder, Tag tag) {
+    public FolderTag(Folder folder, Tag tag) {
         this.folder = folder;
         this.tag = tag;
     }

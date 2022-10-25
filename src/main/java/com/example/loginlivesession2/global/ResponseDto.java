@@ -19,10 +19,6 @@ public class ResponseDto<T> {
         return new ResponseDto<>(true, data, null);
     }
 
-    public static <T> ResponseDto<T> fail(ErrorCode errorCode) {
-        return new ResponseDto<>(false, null, new Error(errorCode.getHttpStatus(), errorCode.getMessage()));
-    }
-
     public static <T> ResponseDto<T> fails(HttpStatus httpStatus, String message) {
         return new ResponseDto<>(false, null, new Error(httpStatus,message));
     }

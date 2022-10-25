@@ -41,5 +41,5 @@ public class Folder extends TimeStamped{
     }
 
 //     tag 업데이트
-    public void updateTag(String tag){this.tags = tag;}
+    public void updateFolderTag(String tag){this.tags = tag;}
 }

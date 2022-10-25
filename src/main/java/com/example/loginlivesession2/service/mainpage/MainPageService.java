@@ -38,27 +38,46 @@ public class MainPageService {
     @Value("${cloud.aws.s3.bucket}")
     private String bucketName;
 
+    // 폴더 생성
     @Transactional
     public String createFolder(FolderReqDto folderReqDto, Member member) {
+        // 날짜 형식 맞는지 확인
         try{
             LocalDate.parse(folderReqDto.getDate(), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
         }catch (Exception e){
             throw new RequestException(ErrorCode.DateTimeException_400);
         }
         LocalDate date = LocalDate.parse(folderReqDto.getDate(), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-                Folder folder = new Folder(folderReqDto.getFolderName(),
+
+        // 폴더 생성
+        Folder folder = new Folder(folderReqDto.getFolderName(),
                 date,
                 listToString(folderReqDto.getTag()),
                 member);
         folderRepository.save(folder);
 
-        for (String folderTag : folderReqDto.getTag()) {
-            Tag tag = new Tag(folderTag);
-            tagRepository.save(tag);
-            foldertagRepository.save(new Foldertag(folder, tag));
+        // 태그 추가
+        for (String tagName : folderReqDto.getTag()) {
+
+            // 1. tag 엔티티에 존재하는지 확인, 존재하면 해당 tag 객체 가져오기
+            Tag tag = tagRepository.findByTagNameEquals(tagName).orElse(new Tag(tagName));
+
+            // 2. 존재하지 않으면 새 태그 save, 있으면 plusTag
+            if(tagRepository.findByTagNameEquals(tagName).isEmpty()){
+                tagRepository.save(tag);
+            }else{
+                tag.plusTag();
+            }
+
+            // 3. FolderTag 엔티티에 저장
+            foldertagRepository.save(new FolderTag(folder, tag));
+
         }
         return "생성이 완료되었습니다!";
     }
+
+
+
 
     @Transactional(readOnly = true)
     public MainPageResDto getMainPage(Member member) {

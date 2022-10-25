@@ -5,6 +5,7 @@ import com.example.loginlivesession2.dto.requestdto.TagReqDto;
 import com.example.loginlivesession2.global.ResponseDto;
 import com.example.loginlivesession2.security.user.UserDetailsImpl;
 import com.example.loginlivesession2.service.folder.FolderService;
+import com.example.loginlivesession2.service.folder.TagModifyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +22,7 @@ import java.util.List;
 public class FolderController {
 
     private final FolderService folderService;
+    private final TagModifyService tagModifyService;
 
     @PostMapping
     public ResponseEntity<ResponseDto<String>> addPhotos(@RequestPart(required = false, value = "file") List<MultipartFile> multipartFile,
@@ -33,7 +35,7 @@ public class FolderController {
     public ResponseDto<String> updateTag(@RequestBody TagReqDto tagReqDto,
                                     @PathVariable Long folderId,
                                     @AuthenticationPrincipal UserDetailsImpl userDetails){
-        return ResponseDto.success(folderService.updateTag(folderId, tagReqDto, userDetails.getAccount()));
+        return ResponseDto.success(tagModifyService.updateTag(folderId, tagReqDto, userDetails.getAccount()));
     }
 
     @GetMapping

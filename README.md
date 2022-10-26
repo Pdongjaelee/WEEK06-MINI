@@ -14,4 +14,4 @@
 ## 🚀 트러블슈팅
 
 ### BackEnd 팀원 깃허브
-👩‍💻 [윤수영](https://github.com/Suyoung225) 🧑‍💻 [이승우](https://github.com.iswoos) 👨‍💻 [이동재](https://github.com/Pdongjaelee)
+👩‍💻 [윤수영](https://github.com/Suyoung225) 🧑‍💻 [이승우](https://github.com/orgs/SpartaPhotoGet/people/iswoos) 👨‍💻 [이동재](https://github.com/Pdongjaelee)

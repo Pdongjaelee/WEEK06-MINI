@@ -79,7 +79,7 @@ public class FolderService {
 
         List<FolderResDto> folderResDtoList = new ArrayList<>();
 
-        List<Photo> photos = photoRepository.findAllByFolderId(folderId);
+        List<Photo> photos = photoRepository.findByFolderId(folderId);
         for (Photo photo : photos) {
             FolderResDto folderResDto = new FolderResDto(photo);
             folderResDtoList.add(folderResDto);

@@ -4,16 +4,13 @@ import com.example.loginlivesession2.entity.Folder;
 import com.example.loginlivesession2.entity.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.time.LocalDate;
 import java.util.List;
 
 public interface FolderRepository extends JpaRepository<Folder, Long> {
 
-    List<Folder> findAllByTagsContainsAndMember(String tags,Member member);
 
     List<Folder> findAllByMemberOrderByDateDesc(Member member);
 
-    List<Folder> findAllByMember(Member member);
+    List<Folder> findByMember(Member member);
 
-    List<Folder> findByDateAfter(LocalDate minusDays);
 }

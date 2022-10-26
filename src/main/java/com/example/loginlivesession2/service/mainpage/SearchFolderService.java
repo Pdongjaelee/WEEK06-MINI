@@ -25,10 +25,9 @@ public class SearchFolderService {
 
     private final FoldertagRepository foldertagRepository;
 
-    @Value("${cloud.aws.s3.bucket}")
-    private String bucketName;
 
-    // 태그 검색
+
+    /*// 태그 검색
     @Transactional
     public List<FolderSearchResDto> searchTagFolder(String query, Member member) {
 
@@ -40,6 +39,6 @@ public class SearchFolderService {
             folderSearchResDtoList.add(folderSearchResDto);
         }
         return folderSearchResDtoList;
-    }
+    }*/
 
 }

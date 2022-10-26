@@ -26,20 +26,16 @@ public class Folder extends TimeStamped{
     @Column(nullable = false)
     private LocalDate date;
 
-    @Column
-    private String tags;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id", nullable = false)
     private Member member;
 
-    public Folder(String folderName, LocalDate date, String tag, Member member) {
+    public Folder(String folderName, LocalDate date, Member member) {
         this.folderName = folderName;
         this.date = date;
-        this.tags = tag;
         this.member = member;
     }
 
-//     tag 업데이트
-    public void updateFolderTag(String tag){this.tags = tag;}
+
 }

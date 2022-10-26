@@ -56,7 +56,6 @@ public class MainPageService {
         // 폴더 생성
         Folder folder = new Folder(folderReqDto.getFolderName(),
                 date,
-                listToString(tagList),
                 member);
         folderRepository.save(folder);
 
@@ -89,12 +88,12 @@ public class MainPageService {
                 .map(FolderSearchResDto::new)
                 .collect(Collectors.toList());
         // 가장 많은 태그 top5
-        List<Tag> tagList = tagRepository.findAllByOrderByCountDesc();
+        List<Tag> tagList = tagRepository.findByCountGreaterThanOrderByCountDesc(0);
         if(tagList.size()>5) tagList = tagList.subList(0,5);
         List<String> topTags = tagList.stream().map(Tag::getTagName).collect(Collectors.toList());
 
         // 내가 단 태그 중 가장 많은 태그 top 5
-        List<Folder> myFolderList = folderRepository.findAllByMember(member);
+        List<Folder> myFolderList = folderRepository.findByMember(member);
         HashMap<String, Integer> hm = new HashMap<>();
         for (Folder folder : myFolderList) {
             List<FolderTag> myTagFolderList = foldertagRepository.findByFolderId(folder.getId());
@@ -160,9 +159,19 @@ public class MainPageService {
     public String deleteFolder(Long id, Member member) {
         Folder folder = folderObject(id);
         authorityCheck(folder, member);
-        List<Photo> photos = photoRepository.findAllByFolderId(id);
+        // 사진 삭제
+        List<Photo> photos = photoRepository.findByFolderId(id);
+        // S3에서 사진 삭제
         for (Photo photo : photos) amazonS3Client.deleteObject(bucketName,photo.getFileName());
         photoRepository.deleteAll(photos);
+
+        // tag count -1
+        List<FolderTag> folderTagList = foldertagRepository.findByFolderId(id);
+        for (FolderTag folderTag : folderTagList) {
+            Tag tag = tagRepository.findByTagName(folderTag.getTagName()).orElse(new Tag());
+            tag.minusTag();
+        }
+        // 폴더 삭제, folderTag에서도 해당 폴더 삭제
         folderRepository.deleteById(id);
         return "폴더 삭제";
     }
@@ -179,9 +188,5 @@ public class MainPageService {
         }
     }
 
-    private String listToString(List<String> tagList) {
-        StringBuilder tag = new StringBuilder();
-        for (String s : tagList) tag.append(s);
-        return tag.toString();
-    }
+
 }

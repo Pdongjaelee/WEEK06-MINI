@@ -8,5 +8,6 @@ import java.util.Optional;
 
 public interface TagRepository extends JpaRepository<Tag, Long> {
     Optional<Tag> findByTagName(String folderTag);
-    List<Tag> findAllByOrderByCountDesc();
+
+    List<Tag> findByCountGreaterThanOrderByCountDesc(int i);
 }

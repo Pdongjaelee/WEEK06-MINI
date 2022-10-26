@@ -36,7 +36,6 @@ public class TagModifyService {
         // 들어온 태그 중 중복 제거
         HashSet<String> hashSet = new HashSet<>(tagReqDto.getTag());
         List<String> newTagList = new ArrayList<>(hashSet);
-        folder.updateFolderTag(listToString(newTagList));
 
 
         // 1. folderTag 엔티티에서 findbyFolderId.getTagName()

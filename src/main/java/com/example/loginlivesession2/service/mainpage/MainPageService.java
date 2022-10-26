@@ -104,6 +104,7 @@ public class MainPageService {
         }
         List<Map.Entry<String, Integer>> entryList = new LinkedList<>(hm.entrySet());
         entryList.sort(((o1, o2) -> hm.get(o2.getKey()) - hm.get(o1.getKey())));
+        if(entryList.size() > 5)  entryList.subList(0,5);
         HashMap<String, Integer> myTopTags = new HashMap<>();
         for (Map.Entry<String, Integer> entry : entryList) {
             myTopTags.put(entry.getKey(), entry.getValue());

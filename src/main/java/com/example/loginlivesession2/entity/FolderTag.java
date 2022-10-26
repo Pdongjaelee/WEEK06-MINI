@@ -3,6 +3,8 @@ package com.example.loginlivesession2.entity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 
@@ -18,6 +20,7 @@ public class FolderTag extends TimeStamped {
 
     @ManyToOne
     @JoinColumn(name = "folder_id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Folder folder;
 
     @Column

@@ -6,7 +6,6 @@ import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.amazonaws.util.IOUtils;
 import com.example.loginlivesession2.S3.CommonUtils;
-import com.example.loginlivesession2.dto.requestdto.TagReqDto;
 import com.example.loginlivesession2.dto.responsedto.FolderPageResDto;
 import com.example.loginlivesession2.dto.responsedto.FolderResDto;
 import com.example.loginlivesession2.entity.Folder;
@@ -96,16 +95,6 @@ public class FolderService {
     }
 
     @Transactional
-    public String updateTag(Long folderId, TagReqDto tagReqDto, Member member){
-        Folder folder = folderObject(folderId);
-        authorityCheck(folder, member);
-        folder.updateFolderTag(listToString(tagReqDto.getTag()));
-        return "수정 완료";
-    }
-
-
-
-    @Transactional
     public String deletePhotos(Long folderId, List<Long>photoIdList, Member member) {
         Folder folder = folderObject(folderId);
         authorityCheck(folder, member);
@@ -128,11 +117,5 @@ public class FolderService {
         return folderRepository.findById(id).orElseThrow(
                 () -> new RequestException(ErrorCode.FOLDER_ID_NOT_FOUND_404)
         );
-    }
-
-    private String listToString(List<String> tagList) {
-        StringBuilder tag = new StringBuilder();
-        for (String s : tagList) tag.append(s);
-        return tag.toString();
     }
 }

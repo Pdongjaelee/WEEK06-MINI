@@ -11,4 +11,5 @@ public interface FoldertagRepository extends JpaRepository<FolderTag,Long> {
 
 
     List<FolderTag> findByFolderId(Long folderId);
+
 }

@@ -27,12 +27,12 @@ public class MainPageController {
         return new ResponseEntity<>(ResponseDto.success(mainPageService.createFolder(folderReqDto, userDetails.getAccount())), HttpStatus.CREATED);
     }
 
-    // 메인 페이지에서 태그 검색
+    /*// 메인 페이지에서 태그 검색
     @GetMapping("/search")
     public ResponseDto<List<FolderSearchResDto>> searchTagFolder(@RequestParam String query,
                                                                  @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return ResponseDto.success(mainPageService.searchTagFolder(query, userDetails.getAccount()));
-    }
+    }*/
 
     // 메인페이지 보여주기, 폴더, 폴더명, 전체 이용자 태그 top5, 내 태그 top5
     @GetMapping

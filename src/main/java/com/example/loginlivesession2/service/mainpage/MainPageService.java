@@ -81,20 +81,38 @@ public class MainPageService {
         return "생성이 완료되었습니다!";
     }
 
-
-
-
+    // 메인페이지 조회
     @Transactional(readOnly = true)
     public MainPageResDto getMainPage(Member member) {
         List<Folder> folderList = folderRepository.findAllByMemberOrderByDateDesc(member);
         List<FolderSearchResDto> folders = folderList.stream()
                 .map(FolderSearchResDto::new)
                 .collect(Collectors.toList());
+        // 가장 많은 태그 top5
+        List<Tag> tagList = tagRepository.findAllByOrderByCountDesc();
+        if(tagList.size()>5) tagList = tagList.subList(0,5);
+        List<String> topTags = tagList.stream().map(Tag::getTagName).collect(Collectors.toList());
 
-        return new MainPageResDto(folders, topTagRanking(), myTagRanking(member));
+        // 내가 단 태그 중 가장 많은 태그 top 5
+        List<Folder> myFolderList = folderRepository.findAllByMember(member);
+        HashMap<String, Integer> hm = new HashMap<>();
+        for (Folder folder : myFolderList) {
+            List<FolderTag> myTagFolderList = foldertagRepository.findByFolderId(folder.getId());
+            for (FolderTag folderTag : myTagFolderList) {
+                hm.put(folderTag.getTagName(), hm.getOrDefault(folderTag.getTagName(), 0) + 1);
+            }
+        }
+        List<Map.Entry<String, Integer>> entryList = new LinkedList<>(hm.entrySet());
+        entryList.sort(((o1, o2) -> hm.get(o2.getKey()) - hm.get(o1.getKey())));
+        HashMap<String, Integer> myTopTags = new HashMap<>();
+        for (Map.Entry<String, Integer> entry : entryList) {
+            myTopTags.put(entry.getKey(), entry.getValue());
+        }
+
+        return new MainPageResDto(folders,topTags, myTopTags);
     }
 
-
+/*
     // 태그 많이 된 순서대로 리스트 반환
     private List<Map.Entry<String, Integer>> tagRankingList(List<Folder> folderList) {
         HashMap<String, Integer> hm = new HashMap<>();
@@ -133,21 +151,8 @@ public class MainPageService {
             topTags.add(entry.getKey());
         }
         return topTags;
-    }
+    }*/
 
-    // 태그 검색
-    @Transactional
-    public List<FolderSearchResDto> searchTagFolder(String query, Member member) {
-
-        List<Folder> folders = folderRepository.findAllByTagsContainsAndMember(query,member);
-
-        List<FolderSearchResDto> folderSearchResDtoList = new ArrayList<>();
-        for (Folder folder : folders) {
-            FolderSearchResDto folderSearchResDto = new FolderSearchResDto(folder);
-            folderSearchResDtoList.add(folderSearchResDto);
-        }
-        return folderSearchResDtoList;
-    }
 
     // 폴더 삭제
     @Transactional

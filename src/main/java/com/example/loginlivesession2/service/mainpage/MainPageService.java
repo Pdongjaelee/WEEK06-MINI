@@ -112,48 +112,6 @@ public class MainPageService {
         return new MainPageResDto(folders,topTags, myTopTags);
     }
 
-/*
-    // 태그 많이 된 순서대로 리스트 반환
-    private List<Map.Entry<String, Integer>> tagRankingList(List<Folder> folderList) {
-        HashMap<String, Integer> hm = new HashMap<>();
-        for (Folder folder : folderList) {
-            if (folder.getTags().length() == 0) continue;
-            String[] tagList = folder.getTags().substring(1).split("#");
-            for (String s : tagList) {
-                hm.put(s, hm.getOrDefault(s, 0) + 1);
-            }
-        }
-        List<Map.Entry<String, Integer>> entryList = new LinkedList<>(hm.entrySet());
-        entryList.sort(((o1, o2) -> hm.get(o2.getKey()) - hm.get(o1.getKey())));
-        return entryList;
-    }
-
-    // 내 태그 top5
-
-    private HashMap<String, Integer> myTagRanking(Member member) {
-        List<Folder> myFolderList = folderRepository.findAllByMember(member);
-        List<Map.Entry<String, Integer>> entryList = tagRankingList(myFolderList);
-        HashMap<String, Integer> topTagsMap = new HashMap<>();
-        if(entryList.size() > 5)  entryList.subList(0,5);
-        for (Map.Entry<String, Integer> entry : entryList) {
-                topTagsMap.put(entry.getKey(), entry.getValue());
-        }
-        return topTagsMap;
-    }
-
-    // 전체 태그 top5
-    private List<String> topTagRanking() {
-        List<Folder> allFolderList = folderRepository.findByDateAfter(LocalDate.now().minusDays(7));
-        List<Map.Entry<String, Integer>> entryList = tagRankingList(allFolderList);
-        List<String> topTags = new ArrayList<>();
-        if(entryList.size() > 5)  entryList.subList(0,5);
-        for (Map.Entry<String, Integer> entry : entryList) {
-            topTags.add(entry.getKey());
-        }
-        return topTags;
-    }*/
-
-
     // 폴더 삭제
     @Transactional
     public String deleteFolder(Long id, Member member) {

@@ -1,4 +1,4 @@
-package com.example.loginlivesession2.service.member.mainpage;
+package com.example.loginlivesession2.service.mainpage;
 
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.example.loginlivesession2.dto.requestdto.FolderReqDto;

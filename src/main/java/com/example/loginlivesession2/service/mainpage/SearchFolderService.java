@@ -3,17 +3,11 @@ package com.example.loginlivesession2.service.mainpage;
 import com.example.loginlivesession2.dto.responsedto.FolderSearchResDto;
 import com.example.loginlivesession2.entity.Folder;
 import com.example.loginlivesession2.entity.Member;
-import com.example.loginlivesession2.entity.QFolder;
 import com.example.loginlivesession2.repository.FolderRepository;
-import com.example.loginlivesession2.repository.FoldertagRepository;
-import com.example.loginlivesession2.repository.TagRepository;
-import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 

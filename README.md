@@ -4,6 +4,8 @@
 📷 나의 여행기록 및 추억들을 사진과 글로 앨범에 저장해보자 💾
 
 
+https://www.youtube.com/watch?v=EirO3gxfXeU
+
 ![image](https://user-images.githubusercontent.com/102216495/198182564-0b2f506f-fd66-4de1-81c6-56bf6669f465.png)
 
 <br>

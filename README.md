@@ -135,8 +135,8 @@ https://www.notion.so/API-ef3f57ceb5fb4caca08b7526c20ff71d
     
     👌클라이언트측 주소 기입을 통해 origin 검증 통과작업이 필요했음.
     클라이언트측 도메인에 대한 접근권한을 아래와 같은 코드로 승인하여 문제해결 완료함.
-
-
+    
+    
 ```java
 @Bean
 CorsConfigurationSource corsConfigurationSource() {
@@ -157,7 +157,7 @@ CorsConfigurationSource corsConfigurationSource() {
 } 
 ```
 
-    참조문서
+    참조 블로그
     1. https://stackoverflow.com/questions/37897523/axios-get-access-to-response-header-fields
     2. https://evan-moon.github.io/2020/05/21/about-cors/
     3. https://wonit.tistory.com/572
@@ -176,7 +176,7 @@ CorsConfigurationSource corsConfigurationSource() {
 ```java
 spring.h2.console.settings.web-allow-others=true
 ```
-    [참조 블로그] (https://www.appsloveworld.com/springboot/100/84/h2-database-console-errors-with-sorry-remote-connections-weballowothers-are)
+    참조 블로그 : https://www.appsloveworld.com/springboot/100/84/h2-database-console-errors-with-sorry-remote-connections-weballowothers-are
 
 </div>
 </details>

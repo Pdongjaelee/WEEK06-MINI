@@ -181,6 +181,18 @@ spring.h2.console.settings.web-allow-others=true
 </div>
 </details>
 
+<details>
+<summary>6. 검색어 조회 시 폴더명과 태그 동시 조회
+</summary>
+<div markdown="1">    
+    
+    
+    👌 JPA메소드 쿼리 사용 시, 불필요한 로직이 증가하였음.
+    
+    이를 해소하기 위해 Querydsl 기술을 적용하여 쿼리 성능 최적화를 진행하였음
+    
+</div>
+</details>
 
 
 ### BackEnd 팀원 깃허브
